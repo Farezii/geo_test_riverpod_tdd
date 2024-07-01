@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 
+// TODO: create database with tables for run data and coordinates
+
 class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
   CoordinatesNotifier() : super(const []);
 
   void loadCoordinates() {
-    // TODO: After applying DB, load 
+    // TODO: After applying DB, load
     // Temp state load, same as reset
     state = [];
   }
@@ -21,40 +23,50 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
     state = coordinatesList;
   }
 
-  (Coordinates?, Coordinates?) findDelimitations() {
-    final listCoordinates = state;
-    double startLatitude;
-    double endLatitude;
-    double startlongitude;
-    double endlongitude;
-    Coordinates? startCoordinates;
-    Coordinates? endCoordinates;
+  Map<String, dynamic> findDelimitations(List<Coordinates> listCoordinates) {
+    Map<String, dynamic> areaDelimitation = {
+      'topLeftCorner': null,
+      'topRightCorner': null,
+      'bottomLeftCorner': null,
+      'bottomRightCorner': null,
+    };
 
-    if (listCoordinates.isNotEmpty) {
-      startLatitude = listCoordinates.first.latitude;
-      endLatitude = listCoordinates.first.latitude;
-      startlongitude = listCoordinates.first.longitude;
-      endlongitude = listCoordinates.first.longitude;
-
-      for (Coordinates coordinates in listCoordinates) {
-        if(coordinates.latitude < startLatitude) {
-          startLatitude = coordinates.latitude;
-        }
-        if(coordinates.latitude > endLatitude) {
-          endLatitude = coordinates.latitude;
-        }
-        if(coordinates.longitude < startlongitude) {
-          startlongitude = coordinates.longitude;
-        }
-        if(coordinates.longitude > endlongitude) {
-          endlongitude = coordinates.longitude;
-        }
-      }
-      startCoordinates = Coordinates(latitude: startLatitude, longitude: startlongitude);
-      endCoordinates = Coordinates(latitude: endLatitude, longitude: endlongitude);
+    if (listCoordinates.isEmpty || listCoordinates.length < 3) {
+      return areaDelimitation;
     }
 
-    return (startCoordinates, endCoordinates);
+    areaDelimitation['topLeftCorner'] = listCoordinates.first;
+    areaDelimitation['topRightCorner'] = listCoordinates.first;
+    areaDelimitation['bottomLeftCorner'] =
+        listCoordinates.elementAt(1); // second element of the guaranteed 3
+    areaDelimitation['bottomRightCorner'] = listCoordinates.last;
+
+    for (Coordinates coordinate in listCoordinates) {
+      if (coordinate.latitude < areaDelimitation['topLeftCorner'].latitude &&
+          coordinate.longitude > areaDelimitation['topLeftCorner'].longitude) {
+        areaDelimitation['topLeftCorner'] = coordinate;
+      }
+
+      if (coordinate.latitude > areaDelimitation['topRightCorner'].latitude &&
+          coordinate.longitude > areaDelimitation['topRightCorner'].longitude) {
+        areaDelimitation['topRightCorner'] = coordinate;
+      }
+
+      if (coordinate.latitude < areaDelimitation['bottomLeftCorner'].latitude &&
+          coordinate.longitude >
+              areaDelimitation['bottomLeftCorner'].longitude) {
+        areaDelimitation['bottomLeftCorner'] = coordinate;
+      }
+
+      if (coordinate.latitude >
+              areaDelimitation['bottomRightCorner'].latitude &&
+          coordinate.longitude >
+              areaDelimitation['bottomRightCorner'].longitude) {
+        areaDelimitation['bottomRightCorner'] = coordinate;
+      }
+    }
+
+    return areaDelimitation;
   }
 }
 

@@ -6,20 +6,25 @@ import 'container_manip.dart';
 
 void main() {
   group('Provider tests', () {
+    RunData runData = RunData(
+      email: 'teste@teste.teste',
+      id: '-124122414',
+    );
+
     List<Coordinates> mockCoordinates = [
-      Coordinates(latitude: -50.0, longitude: -50.0),
-      Coordinates(latitude: -50.0, longitude: 0),
-      Coordinates(latitude: -50.0, longitude: 50.0),
-      Coordinates(latitude: 0.0, longitude: -50.0),
-      Coordinates(latitude: 0.0, longitude: 0),
-      Coordinates(latitude: 0.0, longitude: 50.0),
-      Coordinates(latitude: 50.0, longitude: -50.0),
-      Coordinates(latitude: 50.0, longitude: 0),
-      Coordinates(latitude: 50.0, longitude: 50.0),
-      Coordinates(latitude: -25.3, longitude: -50.4),
-      Coordinates(latitude: 75.4, longitude: 0),
-      Coordinates(latitude: 45.0, longitude: -90.0),
-      Coordinates(latitude: -123.5, longitude: 63.8),
+      Coordinates(latitude: -50.0, longitude: -50.0, runData: runData),
+      Coordinates(latitude: -50.0, longitude: 0, runData: runData),
+      Coordinates(latitude: -50.0, longitude: 50.0, runData: runData),
+      Coordinates(latitude: 0.0, longitude: -50.0, runData: runData),
+      Coordinates(latitude: 0.0, longitude: 0, runData: runData),
+      Coordinates(latitude: 0.0, longitude: 50.0, runData: runData),
+      Coordinates(latitude: 50.0, longitude: -50.0, runData: runData),
+      Coordinates(latitude: 50.0, longitude: 0, runData: runData),
+      Coordinates(latitude: 50.0, longitude: 50.0, runData: runData),
+      Coordinates(latitude: -25.3, longitude: -50.4, runData: runData),
+      Coordinates(latitude: 75.4, longitude: 0, runData: runData),
+      Coordinates(latitude: 45.0, longitude: -90.0, runData: runData),
+      Coordinates(latitude: -123.5, longitude: 63.8, runData: runData),
     ];
 
     test('Provider starts empty', () {
@@ -77,7 +82,7 @@ void main() {
       );
     });
 
-    test('Is findDelimitations giving out null', () {
+    test('Is findDelimitations giving out an empty map', () {
       final container = createContainer();
 
       expect(
@@ -85,11 +90,12 @@ void main() {
         isEmpty,
       );
 
-      final (Coordinates? startCoordinates, Coordinates? endCoordinates) =
-          container.read(coordinatesProvider.notifier).findDelimitations();
+      final Map<String, dynamic> listCoordinates =
+          container.read(coordinatesProvider.notifier).findDelimitations(container.read(coordinatesProvider));
 
-      expect(startCoordinates, isNull);
-      expect(endCoordinates, isNull);
+      for (Coordinates? coordinate in listCoordinates.values){
+        expect(coordinate, null);
+      }
     });
 
     test('Is findDelimitations working correctly', () {
@@ -109,11 +115,12 @@ void main() {
         hasLength(mockCoordinates.length),
       );
 
-      final (Coordinates? startCoordinates, Coordinates? endCoordinates) =
-          container.read(coordinatesProvider.notifier).findDelimitations();
+      final Map<String, dynamic> listCoordinates =
+          container.read(coordinatesProvider.notifier).findDelimitations(container.read(coordinatesProvider));
 
-      expect(startCoordinates, isA<Coordinates>());
-      expect(endCoordinates, isA<Coordinates>());
+      for (Coordinates coordinate in listCoordinates.values){
+        expect(coordinate, isA<Coordinates>());
+      }
     });
   });
 }

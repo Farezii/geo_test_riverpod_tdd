@@ -1,26 +1,31 @@
-import 'package:geo_test_riverpod/models/user_data.dart';
+import 'package:uuid/uuid.dart';
+
+const uuid = Uuid();
 
 class Coordinates {
   Coordinates({
-    required this.latitude,
-    required this.longitude,
-  });
+    required this.latitude, // horizontal lines
+    required this.longitude, // vertical lines
+    required this.runData,
+    String? id,
+  }) : id = id ?? uuid.v4();
 
   final double latitude;
   final double longitude;
+  final String id;
+  final RunData runData;
 
   @override
-  String toString() => 'Latitude: $latitude; Longitude: $longitude';
+  String toString() =>
+      'Latitude: $latitude; Longitude: $longitude. Run ${runData.id} by ${runData.email}.';
 }
 
-class DelimitatorCoordinates {
-  DelimitatorCoordinates({
-    required this.startingCoordinates,
-    required this.endingCoordinates,
-    required this.userData,
-  });
+class RunData {
+  RunData({
+    required this.email,
+    String? id,
+  }) : id = id ?? uuid.v4();
 
-  Coordinates startingCoordinates;
-  Coordinates endingCoordinates;
-  final UserData userData;
+  final String email;
+  final String id;
 }

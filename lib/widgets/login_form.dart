@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/screens/homepage.dart';
 import 'package:geo_test_riverpod/utils/validators.dart';
 
 class LoginForm extends StatefulWidget {
@@ -16,8 +17,6 @@ class _LoginFormState extends State<LoginForm> {
   final _loginFormButtonKey = const Key('loginFormButton');
 
   final _formKey = GlobalKey<FormState>();
-  var _enteredEmail = '';
-  var _enteredPassword = '';
 
   void formSaveOnTap() {
     if (_formKey.currentState!.validate()) {
@@ -26,6 +25,8 @@ class _LoginFormState extends State<LoginForm> {
           content: Text('Processing Data'),
         ),
       );
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => HomepageWidget()));
     }
   }
 
