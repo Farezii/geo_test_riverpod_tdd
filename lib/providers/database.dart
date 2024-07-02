@@ -3,7 +3,7 @@ import 'package:sqflite/sqlite_api.dart';
 
 import 'package:path/path.dart' as path;
 
-Future<Database> _getDatabase() async {
+Future<Database> getDatabase() async {
   final dbPath = await sql.getDatabasesPath();
 
   String runDataTableCreate =
@@ -20,7 +20,7 @@ Future<Database> _getDatabase() async {
       db.execute(
         runDataTableCreate,
       );
-      db.execute(
+      return db.execute(
         coordTableCreate,
       );
     },
