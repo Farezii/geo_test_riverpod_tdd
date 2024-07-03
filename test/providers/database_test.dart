@@ -16,7 +16,7 @@ Future main() async {
           'CREATE TABLE runDataTest(id TEXT PRIMARY KEY, email TEXT NOT NULL);';
 
       String coordTableCreateTest =
-          'CREATE TABLE coordinatesTest(id TEXT PRIMARY KEY, latitude DOUBLE NOT NULL, longitude DOUBLE NOT NULL, runId TEXT NOT NULL, FOREIGN KEY(runId) REFERENCES runData(id) ON DELETE CASCADE);';
+          'CREATE TABLE coordinatesTest(id TEXT PRIMARY KEY, latitude DOUBLE NOT NULL, longitude DOUBLE NOT NULL, runId TEXT NOT NULL, FOREIGN KEY(runId) REFERENCES runDataTest(id) ON DELETE CASCADE);';
 
       db = await openDatabase(inMemoryDatabasePath, version: 1,
           onCreate: (db, version) async {
@@ -27,6 +27,7 @@ Future main() async {
           coordTableCreateTest,
         );
       });
+      await db.execute('PRAGMA foreign_keys = ON');
     });
 
     tearDown(() async {
@@ -200,7 +201,7 @@ Future main() async {
     });
 
     // delete from rundatatest, all coordinates are deleted
-    test('deleting from runDataTest', () async {
+    test('deleting coordinatesTest, from runDataTest', () async {
       await db.insert('runDatatest', {
         'email': runData.email,
         'id': runData.id,
