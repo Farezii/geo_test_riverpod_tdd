@@ -12,7 +12,7 @@ void _createTableRunData(Database db) {
   db.execute('CREATE TABLE runData(id TEXT PRIMARY KEY, email TEXT NOT NULL);');
 }
 
-Future<void> onConfigure(Database db) async {
+Future<void> _onConfigure(Database db) async {
   await db.execute('PRAGMA foreign_keys = ON');
 }
 
@@ -29,7 +29,7 @@ Future<Database> getDatabase() async {
       _createTableCoordinates(db);
     },
     onDowngrade: onDatabaseDowngradeDelete,
-    onConfigure: onConfigure,
+    onConfigure: _onConfigure,
   );
 
   return db;
