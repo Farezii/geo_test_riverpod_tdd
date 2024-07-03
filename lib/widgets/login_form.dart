@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/screens/homepage.dart';
 import 'package:geo_test_riverpod/utils/validators.dart';
 
 class LoginForm extends StatefulWidget {
@@ -16,8 +17,6 @@ class _LoginFormState extends State<LoginForm> {
   final _loginFormButtonKey = const Key('loginFormButton');
 
   final _formKey = GlobalKey<FormState>();
-  var _enteredEmail = '';
-  var _enteredPassword = '';
 
   void formSaveOnTap() {
     if (_formKey.currentState!.validate()) {
@@ -26,6 +25,8 @@ class _LoginFormState extends State<LoginForm> {
           content: Text('Processing Data'),
         ),
       );
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => HomepageWidget()));
     }
   }
 
@@ -39,35 +40,48 @@ class _LoginFormState extends State<LoginForm> {
         ),
         body: Form(
             key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  key: _emailTextFormFieldKey,
-                  validator: isValidEmail,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Email'),
-                    icon: Icon(Icons.person),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    key: _emailTextFormFieldKey,
+                    validator: isValidEmail,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text('Email'),
+                      icon: Icon(Icons.person),
+                    ),
                   ),
-                ),
-                TextFormField(
-                  key: _passwordTextFormFieldKey,
-                  validator: isValidPassword,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Password'),
-                    icon: Icon(Icons.key),
+                  const Padding(
+                    padding: EdgeInsetsDirectional.symmetric(
+                      vertical: 4,
+                    ),
                   ),
-                ),
-                ElevatedButton.icon(
-                  key: _loginFormButtonKey,
-                  onPressed: formSaveOnTap,
-                  label: const Text('Login'),
-                  icon: const Icon(Icons.login),
-                ),
-              ],
+                  TextFormField(
+                    key: _passwordTextFormFieldKey,
+                    validator: isValidPassword,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text('Password'),
+                      icon: Icon(Icons.key),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsetsDirectional.symmetric(
+                      vertical: 4,
+                    ),
+                  ),
+                  ElevatedButton.icon(
+                    key: _loginFormButtonKey,
+                    onPressed: formSaveOnTap,
+                    label: const Text('Login'),
+                    icon: const Icon(Icons.login),
+                  ),
+                ],
+              ),
             )));
   }
 }
