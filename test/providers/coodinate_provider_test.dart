@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
+import 'package:mockito/mockito.dart';
+
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'container_manip.dart';
 
@@ -39,7 +42,7 @@ void main() {
       );
     });
 
-    test('Provider adds new coordinate', () {
+    test('Provider adds new coordinate', () async {
       final container = createContainer();
 
       expect(
@@ -47,9 +50,16 @@ void main() {
         isEmpty,
       );
 
-      container
-          .read(coordinatesProvider.notifier)
-          .addCoordinates(mockCoordinates.first);
+      final newEntryLatitude = mockCoordinates.first.latitude;
+      final newEntryLongitude = mockCoordinates.first.longitude;
+      final newEntryRunData = mockCoordinates.first.runData;
+
+      when(container.read(coordinatesProvider.notifier).addCoordinates(
+          newEntryLatitude, newEntryLongitude, newEntryRunData)).thenAnswer((_) {});
+
+      // container
+      //     .read(coordinatesProvider.notifier)
+      //     .addCoordinates(newEntryLatitude, newEntryLongitude, newEntryRunData);
 
       expect(
         container.read(coordinatesProvider),
@@ -57,7 +67,8 @@ void main() {
       );
     });
 
-    test('Provider resets coordinate list', () {
+    test('Provider resets coordinate list', () async {
+      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
       final container = createContainer();
 
       expect(
@@ -65,9 +76,13 @@ void main() {
         isEmpty,
       );
 
+      final newEntryLatitude = mockCoordinates.first.latitude;
+      final newEntryLongitude = mockCoordinates.first.longitude;
+      final newEntryRunData = mockCoordinates.first.runData;
+
       container
           .read(coordinatesProvider.notifier)
-          .addCoordinates(mockCoordinates.first);
+          .addCoordinates(newEntryLatitude, newEntryLongitude, newEntryRunData);
 
       expect(
         container.read(coordinatesProvider),
@@ -80,9 +95,13 @@ void main() {
         container.read(coordinatesProvider),
         isEmpty,
       );
+
+      await db.close();
     });
 
-    test('Is findDelimitations giving out an empty map', () {
+    test('Is findDelimitations giving out an empty map', () async {
+      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+
       final container = createContainer();
 
       expect(
@@ -90,15 +109,19 @@ void main() {
         isEmpty,
       );
 
-      final Map<String, dynamic> listCoordinates =
-          container.read(coordinatesProvider.notifier).findDelimitations(container.read(coordinatesProvider));
+      final Map<String, dynamic> listCoordinates = container
+          .read(coordinatesProvider.notifier)
+          .findDelimitations(container.read(coordinatesProvider));
 
-      for (Coordinates? coordinate in listCoordinates.values){
+      for (Coordinates? coordinate in listCoordinates.values) {
         expect(coordinate, null);
       }
+      await db.close();
     });
 
-    test('Is findDelimitations working correctly', () {
+    test('Is findDelimitations working correctly', () async {
+      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+
       final container = createContainer();
 
       expect(
@@ -107,7 +130,12 @@ void main() {
       );
 
       for (Coordinates coordinate in mockCoordinates) {
-        container.read(coordinatesProvider.notifier).addCoordinates(coordinate);
+        final newEntryLatitude = coordinate.latitude;
+        final newEntryLongitude = coordinate.longitude;
+        final newEntryRunData = coordinate.runData;
+
+        container.read(coordinatesProvider.notifier).addCoordinates(
+            newEntryLatitude, newEntryLongitude, newEntryRunData);
       }
 
       expect(
@@ -115,12 +143,14 @@ void main() {
         hasLength(mockCoordinates.length),
       );
 
-      final Map<String, dynamic> listCoordinates =
-          container.read(coordinatesProvider.notifier).findDelimitations(container.read(coordinatesProvider));
+      final Map<String, dynamic> listCoordinates = container
+          .read(coordinatesProvider.notifier)
+          .findDelimitations(container.read(coordinatesProvider));
 
-      for (Coordinates coordinate in listCoordinates.values){
+      for (Coordinates coordinate in listCoordinates.values) {
         expect(coordinate, isA<Coordinates>());
       }
+      await db.close();
     });
   });
 }

@@ -20,7 +20,7 @@ Future<Database> getDatabase() async {
       db.execute(
         runDataTableCreate,
       );
-      return db.execute(
+      db.execute(
         coordTableCreate,
       );
     },
