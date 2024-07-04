@@ -12,6 +12,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final _emailTextFormFieldController = TextEditingController();
   final _emailTextFormFieldKey = const Key('emailTextFormField');
   final _passwordTextFormFieldKey = const Key('passwordTextFormField');
   final _loginFormButtonKey = const Key('loginFormButton');
@@ -25,8 +26,8 @@ class _LoginFormState extends State<LoginForm> {
           content: Text('Processing Data'),
         ),
       );
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomepageWidget()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomepageWidget(email: _emailTextFormFieldController.text,)));
     }
   }
 
@@ -47,6 +48,7 @@ class _LoginFormState extends State<LoginForm> {
                 children: [
                   TextFormField(
                     key: _emailTextFormFieldKey,
+                    controller: _emailTextFormFieldController,
                     validator: isValidEmail,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
