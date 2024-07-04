@@ -16,32 +16,23 @@ class _HomepageWidgetState extends State<HomepageWidget> {
     return Scaffold(
       appBar: AppBar(title: const Text('Test'), actions: <Widget>[
         IconButton(
+          tooltip: 'New run',
           onPressed: () {},
           icon: const Icon(
             Icons.library_add,
           ),
-          tooltip: 'New run',
         ),
         IconButton(
+          tooltip: 'Show saved coordinates',
           onPressed: () {},
           icon: const Icon(
             Icons.list_alt,
           ),
-          tooltip: 'Show saved coordinates',
         ),
       ]),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
-        indicatorColor: Colors.amber,
-        destinations: const <Widget>[
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.list), label: 'All runs'),
-        ],
+      body: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Placeholder(),
       ),
     );
   }
