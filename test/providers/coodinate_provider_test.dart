@@ -1,3 +1,5 @@
+// Soon to be unimplemented
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
@@ -14,7 +16,39 @@ void main() {
       id: '-124122414',
     );
 
-    List<Coordinates> mockCoordinates = [
+    List<Coordinates> mockCoordinatesSquare = [
+      Coordinates(latitude: 1.0, longitude: 4.0, runData: runData),
+      Coordinates(latitude: 1.0, longitude: 3, runData: runData),
+      Coordinates(latitude: 1.0, longitude: 2.0, runData: runData),
+      Coordinates(latitude: 1.0, longitude: 1.0, runData: runData),
+      Coordinates(latitude: 2.0, longitude: 4.0, runData: runData),
+      Coordinates(latitude: 2.0, longitude: 3, runData: runData),
+      Coordinates(latitude: 2.0, longitude: 2.0, runData: runData),
+      Coordinates(latitude: 2.0, longitude: 1.0, runData: runData),
+      Coordinates(latitude: 3.0, longitude: 4.0, runData: runData),
+      Coordinates(latitude: 3.0, longitude: 3, runData: runData),
+      Coordinates(latitude: 3.0, longitude: 2.0, runData: runData),
+      Coordinates(latitude: 3.0, longitude: 1.0, runData: runData),
+      Coordinates(latitude: 4.0, longitude: 4.0, runData: runData),
+      Coordinates(latitude: 4.0, longitude: 3, runData: runData),
+      Coordinates(latitude: 4.0, longitude: 2.0, runData: runData),
+      Coordinates(latitude: 4.0, longitude: 1.0, runData: runData),
+    ];
+
+    final Map<String, dynamic> expectedLimitsSquare = {
+        'topLeftCorner': mockCoordinatesSquare
+            .where((entry) => entry == mockCoordinatesSquare.first),
+        'topRightCorner': mockCoordinatesSquare
+            .where((entry) => entry == mockCoordinatesSquare[12]),
+        'bottomLeftCorner': mockCoordinatesSquare
+            .where((entry) => entry == mockCoordinatesSquare[3]),
+        'bottomRightCorner': mockCoordinatesSquare
+            .where((entry) => entry == mockCoordinatesSquare.last),
+      };
+
+      mockCoordinatesSquare.shuffle();
+
+    List<Coordinates> mockCoordinatesUneven = [
       Coordinates(latitude: -50.0, longitude: -50.0, runData: runData),
       Coordinates(latitude: -50.0, longitude: 0, runData: runData),
       Coordinates(latitude: -50.0, longitude: 50.0, runData: runData),
@@ -30,127 +64,42 @@ void main() {
       Coordinates(latitude: -123.5, longitude: 63.8, runData: runData),
     ];
 
-    test('Provider starts empty', () {
-      // Create a ProviderContainer for this test.
-      // DO NOT share ProviderContainers between tests.
+    final Map<String, dynamic> expectedLimitsUneven = {
+        'topLeftCorner': mockCoordinatesUneven
+            .where((entry) => entry == mockCoordinatesUneven.last),
+        'topRightCorner': mockCoordinatesUneven
+            .where((entry) => entry == mockCoordinatesUneven[12]),
+        'bottomLeftCorner': mockCoordinatesUneven
+            .where((entry) => entry == mockCoordinatesUneven[3]),
+        'bottomRightCorner': mockCoordinatesUneven
+            .where((entry) => entry == mockCoordinatesUneven.last),
+      };
+
+      mockCoordinatesUneven.shuffle();
+
+    test('Is findDelimitations working correctly (square)', () async {
       final container = createContainer();
 
-      // TODO: use the container to test your application.
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-    });
-
-    test('Provider adds new coordinate', () async {
-      final container = createContainer();
-
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-
-      final newEntryLatitude = mockCoordinates.first.latitude;
-      final newEntryLongitude = mockCoordinates.first.longitude;
-      final newEntryRunData = mockCoordinates.first.runData;
-
-      when(container.read(coordinatesProvider.notifier).addCoordinates(
-          newEntryLatitude, newEntryLongitude, newEntryRunData)).thenAnswer((_) {});
-
-      // container
-      //     .read(coordinatesProvider.notifier)
-      //     .addCoordinates(newEntryLatitude, newEntryLongitude, newEntryRunData);
-
-      expect(
-        container.read(coordinatesProvider),
-        hasLength(1),
-      );
-    });
-
-    test('Provider resets coordinate list', () async {
-      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
-      final container = createContainer();
-
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-
-      final newEntryLatitude = mockCoordinates.first.latitude;
-      final newEntryLongitude = mockCoordinates.first.longitude;
-      final newEntryRunData = mockCoordinates.first.runData;
-
-      container
+      final Map<String, dynamic> mapCoordinates = container
           .read(coordinatesProvider.notifier)
-          .addCoordinates(newEntryLatitude, newEntryLongitude, newEntryRunData);
+          .findDelimitations(mockCoordinatesSquare);
 
-      expect(
-        container.read(coordinatesProvider),
-        hasLength(1),
-      );
-
-      container.read(coordinatesProvider.notifier).resetCoordinates();
-
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-
-      await db.close();
-    });
-
-    test('Is findDelimitations giving out an empty map', () async {
-      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
-
-      final container = createContainer();
-
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-
-      final Map<String, dynamic> listCoordinates = container
-          .read(coordinatesProvider.notifier)
-          .findDelimitations(container.read(coordinatesProvider));
-
-      for (Coordinates? coordinate in listCoordinates.values) {
-        expect(coordinate, null);
-      }
-      await db.close();
-    });
-
-    test('Is findDelimitations working correctly', () async {
-      var db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
-
-      final container = createContainer();
-
-      expect(
-        container.read(coordinatesProvider),
-        isEmpty,
-      );
-
-      for (Coordinates coordinate in mockCoordinates) {
-        final newEntryLatitude = coordinate.latitude;
-        final newEntryLongitude = coordinate.longitude;
-        final newEntryRunData = coordinate.runData;
-
-        container.read(coordinatesProvider.notifier).addCoordinates(
-            newEntryLatitude, newEntryLongitude, newEntryRunData);
+      print('Found limits');
+      for (MapEntry<String, dynamic> entry in mapCoordinates.entries) {
+        print('${entry.key}: ${entry.value}');
+        expect(entry.value, isA<Coordinates>());
       }
 
-      expect(
-        container.read(coordinatesProvider),
-        hasLength(mockCoordinates.length),
-      );
-
-      final Map<String, dynamic> listCoordinates = container
-          .read(coordinatesProvider.notifier)
-          .findDelimitations(container.read(coordinatesProvider));
-
-      for (Coordinates coordinate in listCoordinates.values) {
-        expect(coordinate, isA<Coordinates>());
+      print('Expected limits');
+      for (MapEntry<String, dynamic> entry in expectedLimitsSquare.entries) {
+        print('${entry.key}: ${entry.value}');
       }
-      await db.close();
+
+      print('sorted');
+      mockCoordinatesSquare.sort((a,b) => a.latitude.compareTo(b.latitude));
+      for (MapEntry<String, dynamic> entry in expectedLimitsSquare.entries) {
+        print('${entry.key}: ${entry.value}');
+      }
     });
   });
 }

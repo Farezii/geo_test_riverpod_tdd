@@ -1,15 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/database.dart';
+import 'package:geo_test_riverpod/utils/uuid_utils.dart';
 import 'package:uuid/uuid.dart';
 
 class RunDataNotifier extends StateNotifier<List<RunData>> {
   RunDataNotifier() : super(const []);
+  final String _databaseName = 'runData';
 
   Future<void> loadRuns() async {
     final db = await getDatabase();
 
-    final runList = await db.query('runData');
+    final runList = await db.query(_databaseName);
 
     final runDataList = runList
         .map(
@@ -24,13 +26,7 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
   }
 
   Future<void> addRun(String email) async {
-    const uuid = Uuid();
-    String newId;
-
-    // Generate a unique ID
-    do {
-      newId = uuid.v4();
-    } while (state.any((run) => run.id == newId));
+    String newId = newUuidV4(state);
 
     final newRunEntry = RunData(
       email: email,
@@ -39,7 +35,7 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
 
     final db = await getDatabase();
 
-    await db.insert('runData', {
+    await db.insert(_databaseName, {
       'id': newRunEntry.id,
       'email': newRunEntry.email,
     });
@@ -51,13 +47,12 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
     final db = await getDatabase();
 
     await db.delete(
-      'runData',
+      _databaseName,
       where: 'id = ?',
       whereArgs: [runId],
     );
 
     state.removeWhere((runData) => 'id' == runId);
-    // state = [...state];
   }
 }
 
