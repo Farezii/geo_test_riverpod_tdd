@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geo_test_riverpod/widgets/run_tile_list.dart';
+import 'package:geo_test_riverpod/widgets/run_list_tile.dart';
 
 class HomepageWidget extends StatefulWidget {
   const HomepageWidget({super.key, required this.email});
@@ -33,7 +33,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
       ]),
       body: const Padding(
         padding: EdgeInsets.all(8),
-        child: RunTileList(),
+        child: RunListTile(),
       ),
     );
   }
