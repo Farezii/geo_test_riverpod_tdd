@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
 import 'package:geo_test_riverpod/providers/runs_provider.dart';
 
 class RunListTile extends ConsumerStatefulWidget {
@@ -36,7 +35,8 @@ class _RunListTileState extends ConsumerState<RunListTile> {
                 ),
               );
             },
-            child: const ListTile());
+            child: const ListTile()); //TODO: take list of runs and show them via this listtile
+            //TODO: click to show all coordiantes of the run, and image of the area.
       },
     );
   }

@@ -1,11 +1,8 @@
 // Soon to be unimplemented
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
-import 'package:mockito/mockito.dart';
 
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'container_manip.dart';
 

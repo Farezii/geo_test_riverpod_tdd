@@ -18,14 +18,14 @@ class _HomepageWidgetState extends State<HomepageWidget> {
       appBar: AppBar(title: const Text('Test'), actions: <Widget>[
         IconButton(
           tooltip: 'New run',
-          onPressed: () {},
+          onPressed: () {}, //TODO: add logic to add new run, using received email
           icon: const Icon(
             Icons.library_add,
           ),
         ),
         IconButton(
           tooltip: 'Show saved coordinates',
-          onPressed: () {},
+          onPressed: () {}, //TODO: To be depreciated in favor of listtile action
           icon: const Icon(
             Icons.list_alt,
           ),
