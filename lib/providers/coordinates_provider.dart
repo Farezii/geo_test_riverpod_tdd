@@ -75,6 +75,8 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
     state = coordinatesList;
   }
 
+  // To be unimplemented, useless complexity
+  // same objective can be achieved by simply making an area around the coordinate given a certain radius or size, without comparisons
   Map<String, dynamic> findDelimitations(List<Coordinates> listCoordinates) {
     Map<String, dynamic> areaDelimitation = {
       'topLeftCorner': null,
