@@ -69,6 +69,17 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
     state = [...state, newCoordinateEntry];
   }
 
+  void removeCoordinates(String coordinatesId) async {
+    final db = await getDatabase();
+    await db.delete(
+      'coordinates',
+      where: 'id = ?',
+      whereArgs: [coordinatesId],
+    );
+
+    state.removeWhere((item) => item.id == coordinatesId);
+  }
+
   void resetCoordinates() {
     // TODO: After DB is applied, use this function to reset it after starting new run
     final List<Coordinates> coordinatesList = [];

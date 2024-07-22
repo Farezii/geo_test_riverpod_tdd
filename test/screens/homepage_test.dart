@@ -11,10 +11,10 @@ void main() {
       ));
 
       final newRunButton = find.ancestor(of: find.byIcon(Icons.library_add), matching: find.byWidgetPredicate((widget) => widget is IconButton));
-      final showSavedCoords = find.ancestor(of: find.byIcon(Icons.list_alt), matching: find.byWidgetPredicate((widget) => widget is IconButton));
+      final showHelpScreen = find.ancestor(of: find.byIcon(Icons.help), matching: find.byWidgetPredicate((widget) => widget is IconButton));
 
       expect(newRunButton, findsOneWidget);
-      expect(showSavedCoords, findsOneWidget);
+      expect(showHelpScreen, findsOneWidget);
     });
   });
 }
