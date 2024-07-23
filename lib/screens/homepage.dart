@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/screens/new_run.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 
 class HomepageWidget extends StatefulWidget {
@@ -14,20 +15,18 @@ class _HomepageWidgetState extends State<HomepageWidget> {
   int currentPageIndex = 0;
 
   void startNewRun() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => HomepageWidget(
-              email: widget.email,
-            ))); //TODO: create new widget for new run screen
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const NewRunScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Test'), actions: <Widget>[
+      appBar: AppBar(title: const Text('Saved runs'), actions: <Widget>[
         IconButton(
           tooltip: 'New run',
           onPressed:
-              () {}, //TODO: add logic to add new run, using received email
+              startNewRun, //TODO: add logic to add new run, using received email
           icon: const Icon(
             Icons.library_add,
           ),
@@ -42,7 +41,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
       ]),
       body: const Padding(
         padding: EdgeInsets.all(8),
-        child: Placeholder(),
+        child: RunListTile(),
       ),
     );
   }
