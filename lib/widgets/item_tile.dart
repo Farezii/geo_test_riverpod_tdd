@@ -26,13 +26,13 @@ class ItemTile extends ConsumerWidget {
       return ListTile(
         leading: Text(index.toString()),
         title: Text('ID: ${item.id}'),
-        subtitle: Text('Coordinates: ${item.latitude}, ${item.longitude}'),
+        subtitle: Text(subtitleText(item)),
       );
     } else if (item is RunData) {
       return ListTile(
         leading: Text(index.toString()),
         title: Text('ID: ${item.id}'),
-        subtitle: Text('Email: ${item.email}'),
+        subtitle: Text(subtitleText(item)),
       );
     } else {
       return const ListTile(

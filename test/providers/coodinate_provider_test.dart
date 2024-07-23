@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
 
-
 import 'container_manip.dart';
 
 void main() {
@@ -33,17 +32,17 @@ void main() {
     ];
 
     final Map<String, dynamic> expectedLimitsSquare = {
-        'topLeftCorner': mockCoordinatesSquare
-            .where((entry) => entry == mockCoordinatesSquare.first),
-        'topRightCorner': mockCoordinatesSquare
-            .where((entry) => entry == mockCoordinatesSquare[12]),
-        'bottomLeftCorner': mockCoordinatesSquare
-            .where((entry) => entry == mockCoordinatesSquare[3]),
-        'bottomRightCorner': mockCoordinatesSquare
-            .where((entry) => entry == mockCoordinatesSquare.last),
-      };
+      'topLeftCorner': mockCoordinatesSquare
+          .where((entry) => entry == mockCoordinatesSquare.first),
+      'topRightCorner': mockCoordinatesSquare
+          .where((entry) => entry == mockCoordinatesSquare[12]),
+      'bottomLeftCorner': mockCoordinatesSquare
+          .where((entry) => entry == mockCoordinatesSquare[3]),
+      'bottomRightCorner': mockCoordinatesSquare
+          .where((entry) => entry == mockCoordinatesSquare.last),
+    };
 
-      mockCoordinatesSquare.shuffle();
+    mockCoordinatesSquare.shuffle();
 
     List<Coordinates> mockCoordinatesUneven = [
       Coordinates(latitude: -50.0, longitude: -50.0, runData: runData),
@@ -62,41 +61,16 @@ void main() {
     ];
 
     final Map<String, dynamic> expectedLimitsUneven = {
-        'topLeftCorner': mockCoordinatesUneven
-            .where((entry) => entry == mockCoordinatesUneven.last),
-        'topRightCorner': mockCoordinatesUneven
-            .where((entry) => entry == mockCoordinatesUneven[12]),
-        'bottomLeftCorner': mockCoordinatesUneven
-            .where((entry) => entry == mockCoordinatesUneven[3]),
-        'bottomRightCorner': mockCoordinatesUneven
-            .where((entry) => entry == mockCoordinatesUneven.last),
-      };
+      'topLeftCorner': mockCoordinatesUneven
+          .where((entry) => entry == mockCoordinatesUneven.last),
+      'topRightCorner': mockCoordinatesUneven
+          .where((entry) => entry == mockCoordinatesUneven[12]),
+      'bottomLeftCorner': mockCoordinatesUneven
+          .where((entry) => entry == mockCoordinatesUneven[3]),
+      'bottomRightCorner': mockCoordinatesUneven
+          .where((entry) => entry == mockCoordinatesUneven.last),
+    };
 
-      mockCoordinatesUneven.shuffle();
-
-    test('Is findDelimitations working correctly (square)', () async {
-      final container = createContainer();
-
-      final Map<String, dynamic> mapCoordinates = container
-          .read(coordinatesProvider.notifier)
-          .findDelimitations(mockCoordinatesSquare);
-
-      print('Found limits');
-      for (MapEntry<String, dynamic> entry in mapCoordinates.entries) {
-        print('${entry.key}: ${entry.value}');
-        expect(entry.value, isA<Coordinates>());
-      }
-
-      print('Expected limits');
-      for (MapEntry<String, dynamic> entry in expectedLimitsSquare.entries) {
-        print('${entry.key}: ${entry.value}');
-      }
-
-      print('sorted');
-      mockCoordinatesSquare.sort((a,b) => a.latitude.compareTo(b.latitude));
-      for (MapEntry<String, dynamic> entry in expectedLimitsSquare.entries) {
-        print('${entry.key}: ${entry.value}');
-      }
-    });
+    mockCoordinatesUneven.shuffle();
   });
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 
 class NewRunScreen extends StatefulWidget {
-  const NewRunScreen({super.key});
+  NewRunScreen({super.key, required this.newRun});
+
+  RunData newRun;
 
   @override
   State<NewRunScreen> createState() {
@@ -11,6 +14,9 @@ class NewRunScreen extends StatefulWidget {
 }
 
 class _NewRunScreenState extends State<NewRunScreen> {
+  List<Coordinates> listCoordinates = [];
+  void showAllCoordinatesFromRun(){}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,7 @@ class _NewRunScreenState extends State<NewRunScreen> {
         title: const Text('New run'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
