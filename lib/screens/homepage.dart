@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geo_test_riverpod/models/coordinates.dart';
+import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/screens/new_run.dart';
+import 'package:geo_test_riverpod/utils/uuid_utils.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 
-class HomepageWidget extends StatefulWidget {
+class HomepageWidget extends ConsumerStatefulWidget {
   const HomepageWidget({super.key, required this.email});
 
   final String email;
 
   @override
-  State<HomepageWidget> createState() => _HomepageWidgetState();
+  ConsumerState<HomepageWidget> createState() => _HomepageWidgetState();
 }
 
-class _HomepageWidgetState extends State<HomepageWidget> {
+class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
   int currentPageIndex = 0;
 
   void startNewRun() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const NewRunScreen()));
+    RunData newRun = RunData(
+      email: widget.email,
+      id: newUuidV4(ref.read(runDataProvider)),
+    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => NewRunScreen(
+              newRun: newRun,
+            )));
   }
 
   @override
@@ -39,8 +49,8 @@ class _HomepageWidgetState extends State<HomepageWidget> {
           ),
         ),
       ]),
-      body: const Padding(
-        padding: EdgeInsets.all(8),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
         child: RunListTile(),
       ),
     );
