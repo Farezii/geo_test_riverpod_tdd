@@ -60,8 +60,8 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
 
     final db = await getDatabase();
     await db.insert('coordinates', {
-      'latitude': latitude,
-      'longitude': longitude,
+      'latitude': latitude.toDouble(),
+      'longitude': longitude.toDouble(),
       'id': newId,
       'runId': runData.id,
     });

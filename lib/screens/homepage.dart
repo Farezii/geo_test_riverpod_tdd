@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
+import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
 import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/screens/new_run.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
@@ -18,15 +19,42 @@ class HomepageWidget extends ConsumerStatefulWidget {
 class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
   int currentPageIndex = 0;
 
-  void startNewRun() {
+  void startNewRun() async {
+    print('Before new run');
+    print('Run Provider: ${ref.read(runDataProvider).toString()}');
+    print('Coordinates Provider: ${ref.read(coordinatesProvider).toString()}');
+
     RunData newRun = RunData(
       email: widget.email,
       id: newUuidV4(ref.read(runDataProvider)),
     );
-    Navigator.of(context).push(MaterialPageRoute(
+    final List<Coordinates> newRunCoordinates =
+        await Navigator.of(context).push(
+      MaterialPageRoute(
         builder: (context) => NewRunScreen(
-              newRun: newRun,
-            )));
+          newRun: newRun,
+        ),
+      ),
+    );
+
+    print('New coordinates:');
+    print(newRunCoordinates.toString());
+
+    if (newRunCoordinates.isNotEmpty) {
+      setState(() {
+        ref.read(runDataProvider.notifier).addRun(widget.email, newRun.id);
+        for (var item in newRunCoordinates) {
+          ref
+              .read(coordinatesProvider.notifier)
+              .addCoordinates(item.latitude, item.longitude, newRun);
+        }
+      });
+
+      print('Before new run');
+      print('Run Provider: ${ref.read(runDataProvider).toString()}');
+      print(
+          'Coordinates Provider: ${ref.read(coordinatesProvider).toString()}');
+    }
   }
 
   @override

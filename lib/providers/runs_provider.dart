@@ -25,8 +25,13 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
     state = runDataList;
   }
 
-  Future<void> addRun(String email) async {
-    String newId = newUuidV4(state);
+  Future<void> addRun(String email, String? id) async {
+    String newId;
+    if (id == null) {
+      newId = newUuidV4(state);
+    } else {
+      newId = id;
+    }
 
     final newRunEntry = RunData(
       email: email,
