@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/models/coordinates.dart';
 
-Future<void> openRunCoordinatesList(dynamic item, BuildContext context) {
+Future<void> openRunCoordinatesList(RunData item, BuildContext context) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Basic dialog title'),
-        content: const Text(
-          'A dialog is a type of modal window that\n'
-          'appears in front of app content to\n'
-          'provide critical information, or prompt\n'
-          'for a decision to be made.',
+        content: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Flexible(
+                child: Image.network(
+                    'https://media.tenor.com/eSzFEGSKahgAAAAi/orange-justice-anime.gif'),
+              ),
+              //Flexible(child: ItemTile(item: item, index: index))
+              const Flexible(child: Placeholder()),
+            ],
+          ),
         ),
         actions: <Widget>[
           TextButton(

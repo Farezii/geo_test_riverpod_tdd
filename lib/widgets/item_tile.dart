@@ -33,6 +33,10 @@ class ItemTile extends ConsumerWidget {
         leading: Text(index.toString()),
         title: Text('ID: ${item.id}'),
         subtitle: Text(subtitleText(item)),
+        onTap: () {
+          print('item: ${item.toString()}');
+          print('item type: ${item.runtimeType.toString()}');
+        },
       );
     } else {
       return const ListTile(

@@ -5,7 +5,7 @@ import 'package:path/path.dart' as path;
 
 void _createTableCoordinates(Database db) {
   db.execute(
-      'CREATE TABLE coordinatesTest(id TEXT PRIMARY KEY, latitude DOUBLE NOT NULL, longitude DOUBLE NOT NULL, runId TEXT NOT NULL, FOREIGN KEY(runId) REFERENCES runData(id) ON DELETE CASCADE);');
+      'CREATE TABLE coordinates(id TEXT PRIMARY KEY, latitude DOUBLE NOT NULL, longitude DOUBLE NOT NULL, runId TEXT NOT NULL, FOREIGN KEY(runId) REFERENCES runData(id) ON DELETE CASCADE);');
 }
 
 void _createTableRunData(Database db) {

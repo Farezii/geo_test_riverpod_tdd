@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
-import 'package:geo_test_riverpod/widgets/run_dismissable.dart';
+import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
+import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 import 'package:geo_test_riverpod/widgets/location_functions.dart';
 import 'package:geolocator/geolocator.dart';
 
-class NewRunScreen extends StatefulWidget {
+class NewRunScreen extends ConsumerStatefulWidget {
   NewRunScreen({super.key, required this.newRun});
 
   RunData newRun;
 
   @override
-  State<NewRunScreen> createState() {
+  ConsumerState<NewRunScreen> createState() {
     return _NewRunScreenState();
   }
 }
 
-class _NewRunScreenState extends State<NewRunScreen> {
+class _NewRunScreenState extends ConsumerState<NewRunScreen> {
   List<Coordinates> listCoordinates = [];
 
   void getNewPosition() async {
@@ -27,8 +29,8 @@ class _NewRunScreenState extends State<NewRunScreen> {
             longitude: newPosition.longitude,
             runData: widget.newRun),
       );
+      ref.read(coordinatesProvider.notifier).addCoordinates(newPosition.latitude, newPosition.longitude, widget.newRun);
     });
-    print(listCoordinates.toString());
   }
 
   void saveCurrentRun() {
@@ -56,7 +58,7 @@ class _NewRunScreenState extends State<NewRunScreen> {
               label: const Text('Get position'),
             ),
             Flexible(
-              child: RunDismissableList(),
+              child: AdaptableDismissableList(runId: widget.newRun.id,),
             ),
             ElevatedButton.icon(
               onPressed: saveCurrentRun,
