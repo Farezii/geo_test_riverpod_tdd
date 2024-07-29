@@ -3,8 +3,6 @@ import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/database.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
 
-// TODO: create database with tables for run data and coordinates
-
 class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
   CoordinatesNotifier() : super(const []);
 

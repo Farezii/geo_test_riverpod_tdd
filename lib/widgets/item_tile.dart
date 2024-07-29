@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
+import 'package:geo_test_riverpod/screens/new_run.dart';
 
 class ItemTile extends ConsumerWidget {
   const ItemTile({super.key, required this.item, required this.index});
@@ -12,7 +13,7 @@ class ItemTile extends ConsumerWidget {
     String text = '';
 
     if (item is Coordinates) {
-      text = 'Coordinates: ${item.latitude}, ${item.longitude}';
+      text = 'Latitude: ${item.latitude}\nLongitude: ${item.longitude}';
     } else if (item is RunData) {
       text = 'Email: ${item.email}';
     }
@@ -22,6 +23,16 @@ class ItemTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void _openShowCoordinatesOverlay(RunData item) {
+      final listCoordinates = showModalBottomSheet(
+        useSafeArea: true,
+        isScrollControlled: true,
+        context: context,
+        // builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+        builder: (ctx) => NewRunScreen(newRun: item),
+      );
+    }
+
     if (item is Coordinates) {
       return ListTile(
         leading: Text(index.toString()),
@@ -34,8 +45,7 @@ class ItemTile extends ConsumerWidget {
         title: Text('ID: ${item.id}'),
         subtitle: Text(subtitleText(item)),
         onTap: () {
-          print('item: ${item.toString()}');
-          print('item type: ${item.runtimeType.toString()}');
+          _openShowCoordinatesOverlay(item);
         },
       );
     } else {

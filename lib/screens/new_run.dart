@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
+import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 import 'package:geo_test_riverpod/widgets/location_functions.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,7 +19,14 @@ class NewRunScreen extends ConsumerStatefulWidget {
 }
 
 class _NewRunScreenState extends ConsumerState<NewRunScreen> {
-  List<Coordinates> listCoordinates = [];
+  late List<Coordinates> listCoordinates;
+
+  @override
+  void initState() {
+    ref.read(coordinatesProvider.notifier).loadRunCoordinates(widget.newRun.id);
+    listCoordinates = ref.read(coordinatesProvider);
+    super.initState();
+  }
 
   void getNewPosition() async {
     Position newPosition = await determinePosition();
@@ -29,7 +37,8 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
             longitude: newPosition.longitude,
             runData: widget.newRun),
       );
-      ref.read(coordinatesProvider.notifier).addCoordinates(newPosition.latitude, newPosition.longitude, widget.newRun);
+      ref.read(coordinatesProvider.notifier).addCoordinates(
+          newPosition.latitude, newPosition.longitude, widget.newRun);
     });
   }
 
@@ -37,11 +46,22 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
     Navigator.pop(context, listCoordinates);
   }
 
+  void deleteCurrentRun() async{
+    ref.read(runDataProvider.notifier).removeRun(widget.newRun.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New run'),
+        actions: [
+          IconButton(
+            onPressed: deleteCurrentRun,
+            icon: const Icon(Icons.delete),
+            tooltip: 'Delete run',
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -58,7 +78,9 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
               label: const Text('Get position'),
             ),
             Flexible(
-              child: AdaptableDismissableList(runId: widget.newRun.id,),
+              child: AdaptableDismissableList(
+                runId: widget.newRun.id,
+              ),
             ),
             ElevatedButton.icon(
               onPressed: saveCurrentRun,
