@@ -5,7 +5,7 @@ import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
 import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/screens/new_run.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
-import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
+import 'package:geo_test_riverpod/widgets/run_dismissable.dart';
 
 class HomepageWidget extends ConsumerStatefulWidget {
   const HomepageWidget({super.key, required this.email});
@@ -50,7 +50,7 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
         }
       });
 
-      print('Before new run');
+      print('After new run');
       print('Run Provider: ${ref.read(runDataProvider).toString()}');
       print(
           'Coordinates Provider: ${ref.read(coordinatesProvider).toString()}');
@@ -79,7 +79,7 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
       ]),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: RunListTile(),
+        child: RunDismissableList(),
       ),
     );
   }

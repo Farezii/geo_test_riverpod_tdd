@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
-import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
+import 'package:geo_test_riverpod/widgets/run_dismissable.dart';
 import 'package:geo_test_riverpod/widgets/location_functions.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -56,9 +56,7 @@ class _NewRunScreenState extends State<NewRunScreen> {
               label: const Text('Get position'),
             ),
             Flexible(
-              child: RunListTile(
-                listCoordinates: listCoordinates,
-              ),
+              child: RunDismissableList(),
             ),
             ElevatedButton.icon(
               onPressed: saveCurrentRun,
