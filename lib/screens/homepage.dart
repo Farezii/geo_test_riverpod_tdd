@@ -17,7 +17,6 @@ class HomepageWidget extends ConsumerStatefulWidget {
 
 class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
   int currentPageIndex = 0;
-  List<Coordinates> newRunCoordinates = [];
 
   void startNewRun() async {
     RunData newRun = RunData(
@@ -29,50 +28,37 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
       ref.read(runDataProvider.notifier).addRun(widget.email, newRun.id);
     });
 
-    newRunCoordinates = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => NewRunScreen(
           newRun: newRun,
         ),
       ),
     );
-
-    // if (newRunCoordinates.isNotEmpty) {
-    //   setState(() {
-    //     for (var item in newRunCoordinates) {
-    //       ref
-    //           .read(coordinatesProvider.notifier)
-    //           .addCoordinates(item.latitude, item.longitude, newRun);
-    //     }
-    //   });
-    // } else
-    if (newRunCoordinates.isEmpty) {
-      setState(() {
-        ref.read(runDataProvider.notifier).removeRun(newRun.id);
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Saved runs'), actions: <Widget>[
-        IconButton(
-          tooltip: 'New run',
-          onPressed:
-              startNewRun,
-          icon: const Icon(
-            Icons.library_add,
+      appBar: AppBar(
+        title: const Text('Saved runs'),
+        actions: <Widget>[
+          IconButton(
+            tooltip: 'New run',
+            onPressed: startNewRun,
+            icon: const Icon(
+              Icons.library_add,
+            ),
           ),
-        ),
-        IconButton(
-          tooltip: 'Help',
-          onPressed: () {}, //TODO: popup showing what each button does
-          icon: const Icon(
-            Icons.help,
+          IconButton(
+            tooltip: 'Help',
+            onPressed: () {}, //TODO: popup showing what each button does
+            icon: const Icon(
+              Icons.help,
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: AdaptableDismissableList(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
@@ -8,9 +10,9 @@ import 'package:geo_test_riverpod/widgets/location_functions.dart';
 import 'package:geolocator/geolocator.dart';
 
 class NewRunScreen extends ConsumerStatefulWidget {
-  NewRunScreen({super.key, required this.newRun});
+  const NewRunScreen({super.key, required this.newRun});
 
-  RunData newRun;
+  final RunData newRun;
 
   @override
   ConsumerState<NewRunScreen> createState() {
@@ -19,12 +21,14 @@ class NewRunScreen extends ConsumerStatefulWidget {
 }
 
 class _NewRunScreenState extends ConsumerState<NewRunScreen> {
-  late List<Coordinates> listCoordinates;
+  List<Coordinates> listCoordinates = [];
+  List<Coordinates> originalListCoordinates = [];
 
   @override
   void initState() {
     ref.read(coordinatesProvider.notifier).loadRunCoordinates(widget.newRun.id);
-    listCoordinates = ref.read(coordinatesProvider);
+    listCoordinates = ref.read(coordinatesProvider).toList();
+    originalListCoordinates = listCoordinates;
     super.initState();
   }
 
@@ -43,25 +47,15 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
   }
 
   void saveCurrentRun() {
-    Navigator.pop(context, listCoordinates);
-  }
-
-  void deleteCurrentRun() async{
-    ref.read(runDataProvider.notifier).removeRun(widget.newRun.id);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('New run'),
-        actions: [
-          IconButton(
-            onPressed: deleteCurrentRun,
-            icon: const Icon(Icons.delete),
-            tooltip: 'Delete run',
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
