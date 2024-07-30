@@ -50,10 +50,10 @@ class PageIndicator extends StatelessWidget {
             splashRadius: 16,
             padding: EdgeInsets.zero,
             onPressed: () {
-              if (currentPageIndex == 0) {
+              if (currentPageIndex == 2) {
                 return;
               }
-              onUpdateCurrentPageIndex(currentPageIndex - 1);
+              onUpdateCurrentPageIndex(currentPageIndex + 1);
             },
           ),
         ],
