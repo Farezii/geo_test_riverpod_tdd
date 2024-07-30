@@ -4,6 +4,7 @@ import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/screens/new_run.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
+import 'package:geo_test_riverpod/widgets/help_bottom_sheet.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 
 class HomepageWidget extends ConsumerStatefulWidget {
@@ -52,7 +53,7 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
           ),
           IconButton(
             tooltip: 'Help',
-            onPressed: () {}, //TODO: popup showing what each button does
+            onPressed: () => helpModalBottomSheet(context), //TODO: popup showing what each button does
             icon: const Icon(
               Icons.help,
             ),
