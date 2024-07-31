@@ -17,7 +17,7 @@ class Coordinates {
 
   @override
   String toString() =>
-      'Latitude: $latitude; Longitude: $longitude. Run ${runData.id} by ${runData.email}.';
+      'Latitude: $latitude; Longitude: $longitude. Run ${runData.id} by ${runData.email}. ID: $id';
 }
 
 class RunData {
@@ -28,4 +28,8 @@ class RunData {
 
   final String email;
   final String id;
+
+  @override
+  String toString() =>
+      'Run $id by $email.';
 }

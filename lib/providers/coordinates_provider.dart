@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/database.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
 
-// TODO: create database with tables for run data and coordinates
-
 class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
   CoordinatesNotifier() : super(const []);
+  final String _databaseName = 'coordinates';
 
   // Loads coordinates for a specified run given it's unique ID
   Future<void> loadRunCoordinates(String runId) async {
@@ -27,13 +28,14 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
         .toList();
 
     final coordinatesData = await db.query(
-      'coordinates',
+      _databaseName,
       where: 'runId = ?',
       whereArgs: [runId],
     );
     final coordinatesList = coordinatesData
         .map(
           (row) => Coordinates(
+            id: row['id'] as String,
             latitude: row['latitude'] as double,
             longitude: row['longitude'] as double,
             runData: RunData(
@@ -44,7 +46,7 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
         )
         .toList();
 
-    state = coordinatesList;
+    state = [...coordinatesList];
   }
 
   void addCoordinates(
@@ -59,14 +61,26 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
     );
 
     final db = await getDatabase();
-    await db.insert('coordinates', {
-      'latitude': latitude,
-      'longitude': longitude,
+    await db.insert(_databaseName, {
+      'latitude': latitude.toDouble(),
+      'longitude': longitude.toDouble(),
       'id': newId,
       'runId': runData.id,
     });
 
     state = [...state, newCoordinateEntry];
+  }
+
+  void removeCoordinates(String coordinatesId) async {
+    final db = await getDatabase();
+    await db.delete(
+      _databaseName,
+      where: 'id = ?',
+      whereArgs: [coordinatesId],
+    );
+
+    state.removeWhere((item) => item.id == coordinatesId);
+    state = [...state];
   }
 
   void resetCoordinates() {
@@ -75,53 +89,13 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
     state = coordinatesList;
   }
 
-  // To be unimplemented, useless complexity
-  // same objective can be achieved by simply making an area around the coordinate given a certain radius or size, without comparisons
-  Map<String, dynamic> findDelimitations(List<Coordinates> listCoordinates) {
-    Map<String, dynamic> areaDelimitation = {
-      'topLeftCorner': null,
-      'topRightCorner': null,
-      'bottomLeftCorner': null,
-      'bottomRightCorner': null,
-    };
+  // void printSqlDatabase() async {
+  //   log('querying coordinate db');
+  //   final db = await getDatabase();
 
-    if (listCoordinates.isEmpty || listCoordinates.length < 3) {
-      return areaDelimitation;
-    }
-
-    areaDelimitation['topLeftCorner'] = listCoordinates.first;
-    areaDelimitation['topRightCorner'] = listCoordinates.first;
-    areaDelimitation['bottomLeftCorner'] =
-        listCoordinates.elementAt(1); // second element of the guaranteed 3
-    areaDelimitation['bottomRightCorner'] = listCoordinates.last;
-
-    for (Coordinates coordinate in listCoordinates) {
-      if (coordinate.latitude < areaDelimitation['topLeftCorner'].latitude &&
-          coordinate.longitude > areaDelimitation['topLeftCorner'].longitude) {
-        areaDelimitation['topLeftCorner'] = coordinate;
-      }
-
-      if (coordinate.latitude > areaDelimitation['topRightCorner'].latitude &&
-          coordinate.longitude > areaDelimitation['topRightCorner'].longitude) {
-        areaDelimitation['topRightCorner'] = coordinate;
-      }
-
-      if (coordinate.latitude < areaDelimitation['bottomLeftCorner'].latitude &&
-          coordinate.longitude >
-              areaDelimitation['bottomLeftCorner'].longitude) {
-        areaDelimitation['bottomLeftCorner'] = coordinate;
-      }
-
-      if (coordinate.latitude >
-              areaDelimitation['bottomRightCorner'].latitude &&
-          coordinate.longitude >
-              areaDelimitation['bottomRightCorner'].longitude) {
-        areaDelimitation['bottomRightCorner'] = coordinate;
-      }
-    }
-
-    return areaDelimitation;
-  }
+  //   final coordinates = await db.rawQuery('SELECT COUNT (*) from $_databaseName');
+  //   log(coordinates.toString());
+  // }
 }
 
 final coordinatesProvider =

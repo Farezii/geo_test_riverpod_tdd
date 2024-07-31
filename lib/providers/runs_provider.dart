@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:geo_test_riverpod/models/coordinates.dart';
@@ -25,8 +27,13 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
     state = runDataList;
   }
 
-  Future<void> addRun(String email) async {
-    String newId = newUuidV4(state);
+  Future<void> addRun(String email, String? id) async {
+    String newId;
+    if (id == null) {
+      newId = newUuidV4(state);
+    } else {
+      newId = id;
+    }
 
     final newRunEntry = RunData(
       email: email,
@@ -53,7 +60,16 @@ class RunDataNotifier extends StateNotifier<List<RunData>> {
     );
 
     state.removeWhere((runData) => 'id' == runId);
+    state = [...state];
   }
+
+  // void printSqlDatabase() async {
+  //   log('querying run db');
+  //   final db = await getDatabase();
+
+  //   final runData = await db.rawQuery('SELECT COUNT (*) from $_databaseName');
+  //   log(runData.toString());
+  // }
 }
 
 final runDataProvider = StateNotifierProvider<RunDataNotifier, List<RunData>>(
