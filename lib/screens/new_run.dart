@@ -64,8 +64,8 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Flexible(
-              child: Image.network(
-                  'https://media.tenor.com/eSzFEGSKahgAAAAi/orange-justice-anime.gif'),
+              child: Image.asset(
+                  'images/foto fazenda generica painted.png'),
             ),
             ElevatedButton.icon(
               onPressed: getNewPosition,
