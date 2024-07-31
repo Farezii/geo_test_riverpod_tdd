@@ -23,7 +23,7 @@ class ItemTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void _openShowCoordinatesOverlay(RunData item) {
+    void openShowCoordinatesOverlay(RunData item) {
       final listCoordinates = showModalBottomSheet(
         useSafeArea: true,
         isScrollControlled: true,
@@ -45,7 +45,7 @@ class ItemTile extends ConsumerWidget {
         title: Text('ID: ${item.id}'),
         subtitle: Text(subtitleText(item)),
         onTap: () {
-          _openShowCoordinatesOverlay(item);
+          openShowCoordinatesOverlay(item);
         },
       );
     } else {

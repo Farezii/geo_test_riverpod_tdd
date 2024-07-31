@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/database.dart';
@@ -84,7 +82,6 @@ class CoordinatesNotifier extends StateNotifier<List<Coordinates>> {
   }
 
   void resetCoordinates() {
-    // TODO: After DB is applied, use this function to reset it after starting new run
     final List<Coordinates> coordinatesList = [];
     state = coordinatesList;
   }

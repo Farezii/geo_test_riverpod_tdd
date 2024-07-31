@@ -10,7 +10,7 @@ void helpModalBottomSheet(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const Flexible(
-              child: const HelpPagesView(),
+              child: HelpPagesView(),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),

@@ -1,9 +1,7 @@
 // Soon to be unimplemented
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
-import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
 
-import 'container_manip.dart';
 
 void main() {
   group('Provider tests', () {

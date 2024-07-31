@@ -16,11 +16,26 @@ class _HelpPagesViewState extends State<HelpPagesView>
   late TabController _tabController;
   int _currentPageIndex = 0;
 
+  List<Widget> listHelpPages = const <Widget>[
+    Center(
+      child: Text('First Page'), // Page showing what can the homepage do
+    ),
+    Center(
+      child: Text('Second Page'), // Page showing what the new run page can do
+    ),
+    Center(
+      child: Text('Third Page'), // Show how to delete coordinates from a run
+    ),
+    Center(
+      child: Text('Fourth Page'), // Page showing how to delete a run
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: listHelpPages.length, vsync: this);
   }
 
   @override
@@ -54,22 +69,13 @@ class _HelpPagesViewState extends State<HelpPagesView>
         PageView(
           controller: _pageViewController,
           onPageChanged: _handlePageViewChanged,
-          children: const <Widget>[
-            Center(
-              child: Text('First Page'),
-            ),
-            Center(
-              child: Text('Second Page'),
-            ),
-            Center(
-              child: Text('Third Page'),
-            ),
-          ],
+          children: listHelpPages,
         ),
         PageIndicator(
           tabController: _tabController,
           currentPageIndex: _currentPageIndex,
           onUpdateCurrentPageIndex: _updateCurrentPageIndex,
+          lengthPagesList: listHelpPages.length,
         )
       ],
     );

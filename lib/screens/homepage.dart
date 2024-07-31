@@ -64,7 +64,7 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
           ),
           IconButton(
             tooltip: 'Help',
-            onPressed: () => helpModalBottomSheet(context), //TODO: popup showing what each button does
+            onPressed: () => helpModalBottomSheet(context),
             icon: const Icon(
               Icons.help,
             ),

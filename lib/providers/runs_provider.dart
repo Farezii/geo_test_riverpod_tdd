@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/database.dart';
 import 'package:geo_test_riverpod/utils/uuid_utils.dart';
