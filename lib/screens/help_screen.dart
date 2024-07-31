@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geo_test_riverpod/widgets/page_indicator.dart';
 
 class HelpPagesView extends StatefulWidget {
