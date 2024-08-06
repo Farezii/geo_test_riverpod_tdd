@@ -8,11 +8,13 @@ class PageIndicator extends StatelessWidget {
     required this.tabController,
     required this.currentPageIndex,
     required this.onUpdateCurrentPageIndex,
+    required this.lengthPagesList,
   });
 
   final int currentPageIndex;
   final TabController tabController;
   final void Function(int) onUpdateCurrentPageIndex;
+  final int lengthPagesList;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class PageIndicator extends StatelessWidget {
             splashRadius: 16,
             padding: EdgeInsets.zero,
             onPressed: () {
-              if (currentPageIndex == 2) {
+              if (currentPageIndex == lengthPagesList - 1) {
                 return;
               }
               onUpdateCurrentPageIndex(currentPageIndex + 1);

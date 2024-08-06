@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:geo_test_riverpod/utils/help_texts.dart';
+import 'package:geo_test_riverpod/widgets/help_pages.dart';
 import 'package:geo_test_riverpod/widgets/page_indicator.dart';
 
 class HelpPagesView extends StatefulWidget {
@@ -17,11 +18,40 @@ class _HelpPagesViewState extends State<HelpPagesView>
   late TabController _tabController;
   int _currentPageIndex = 0;
 
+  List<Widget> listHelpPages = <Widget>[
+    Center(
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListHomepage,
+      ), // Page showing what can the homepage do
+    ),
+    Center(
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListNewRun,
+      ), // Page showing what the new run page can do
+    ),
+    Center(
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListDeleteRun,
+        bulletPoints: true,
+      ), // Show how to delete coordinates from a run
+    ),
+    Center(
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListDeleteCoordinate,
+        bulletPoints: true,
+      ), // Page showing how to delete a run
+    ),
+  ];
+
   @override
   void initState() {
     super.initState();
     _pageViewController = PageController();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: listHelpPages.length, vsync: this);
   }
 
   @override
@@ -49,28 +79,21 @@ class _HelpPagesViewState extends State<HelpPagesView>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        PageView(
-          controller: _pageViewController,
-          onPageChanged: _handlePageViewChanged,
-          children: const <Widget>[
-            Center(
-              child: Text('First Page'),
-            ),
-            Center(
-              child: Text('Second Page'),
-            ),
-            Center(
-              child: Text('Third Page'),
-            ),
-          ],
+        Expanded(
+          child: PageView(
+            controller: _pageViewController,
+            onPageChanged: _handlePageViewChanged,
+            children: listHelpPages,
+          ),
         ),
         PageIndicator(
           tabController: _tabController,
           currentPageIndex: _currentPageIndex,
           onUpdateCurrentPageIndex: _updateCurrentPageIndex,
+          lengthPagesList: listHelpPages.length,
         )
       ],
     );

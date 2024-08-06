@@ -24,6 +24,7 @@ class _LoginFormState extends State<LoginForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Processing Data'),
+          duration: Durations.extralong4,
         ),
       );
       Navigator.of(context)

@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
-import 'package:geo_test_riverpod/providers/runs_provider.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 import 'package:geo_test_riverpod/widgets/location_functions.dart';
 import 'package:geolocator/geolocator.dart';

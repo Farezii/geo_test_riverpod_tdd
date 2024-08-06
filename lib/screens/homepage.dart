@@ -38,10 +38,21 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
     );
   }
 
+  void onPressLogout() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            tooltip: 'Logout',
+            onPressed: onPressLogout,
+            icon: const Icon(
+              Icons.logout,
+            ),
+          ),
         title: const Text('Saved runs'),
         actions: <Widget>[
           IconButton(
@@ -53,7 +64,7 @@ class _HomepageWidgetState extends ConsumerState<HomepageWidget> {
           ),
           IconButton(
             tooltip: 'Help',
-            onPressed: () => helpModalBottomSheet(context), //TODO: popup showing what each button does
+            onPressed: () => helpModalBottomSheet(context),
             icon: const Icon(
               Icons.help,
             ),
