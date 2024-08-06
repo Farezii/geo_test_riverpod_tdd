@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geo_test_riverpod/utils/help_texts.dart';
+import 'package:geo_test_riverpod/widgets/help_pages.dart';
 import 'package:geo_test_riverpod/widgets/page_indicator.dart';
 
 class HelpPagesView extends StatefulWidget {
@@ -16,18 +18,32 @@ class _HelpPagesViewState extends State<HelpPagesView>
   late TabController _tabController;
   int _currentPageIndex = 0;
 
-  List<Widget> listHelpPages = const <Widget>[
+  List<Widget> listHelpPages = <Widget>[
     Center(
-      child: Text('First Page'), // Page showing what can the homepage do
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListHomepage,
+      ), // Page showing what can the homepage do
     ),
     Center(
-      child: Text('Second Page'), // Page showing what the new run page can do
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListNewRun,
+      ), // Page showing what the new run page can do
     ),
     Center(
-      child: Text('Third Page'), // Show how to delete coordinates from a run
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListDeleteRun,
+        bulletPoints: true,
+      ), // Show how to delete coordinates from a run
     ),
     Center(
-      child: Text('Fourth Page'), // Page showing how to delete a run
+      child: GenericHelpPage(
+        image: 'https://media1.tenor.com/m/R5IECfIf34YAAAAd/fish-spinning.gif',
+        textList: textListDeleteCoordinate,
+        bulletPoints: true,
+      ), // Page showing how to delete a run
     ),
   ];
 
@@ -63,13 +79,15 @@ class _HelpPagesViewState extends State<HelpPagesView>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        PageView(
-          controller: _pageViewController,
-          onPageChanged: _handlePageViewChanged,
-          children: listHelpPages,
+        Expanded(
+          child: PageView(
+            controller: _pageViewController,
+            onPageChanged: _handlePageViewChanged,
+            children: listHelpPages,
+          ),
         ),
         PageIndicator(
           tabController: _tabController,
