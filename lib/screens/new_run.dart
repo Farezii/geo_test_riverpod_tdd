@@ -4,6 +4,7 @@ import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:geo_test_riverpod/providers/coordinates_provider.dart';
 import 'package:geo_test_riverpod/widgets/item_dismissable.dart';
 import 'package:geo_test_riverpod/widgets/location_functions.dart';
+import 'package:geo_test_riverpod/widgets/maps/render_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 class NewRunScreen extends ConsumerStatefulWidget {
@@ -60,10 +61,7 @@ class _NewRunScreenState extends ConsumerState<NewRunScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Flexible(
-              child: Image.asset(
-                  'images/foto fazenda generica painted.png'),
-            ),
+            Flexible(child: LatestCoordinateMap()),
             ElevatedButton.icon(
               onPressed: getNewPosition,
               label: const Text('Get position'),
