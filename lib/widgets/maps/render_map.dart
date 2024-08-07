@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geo_test_riverpod/models/coordinates.dart';
 import 'package:latlong2/latlong.dart';
